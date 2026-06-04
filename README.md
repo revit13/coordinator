@@ -1,5 +1,6 @@
 # LLM-D Coordinator
 
+
 A Go service that orchestrates multi-phase LLM inference pipelines (Encode/Prefill/Decode) across specialized worker pools. It exposes OpenAI-compatible APIs and routes requests through an Envoy Gateway to disaggregated vLLM workers.
 
 ## Architecture
