@@ -3,7 +3,7 @@ SHELL := /usr/bin/env bash
 # Image registry + dev-environment image tags (single source of truth).
 include versions.mk
 
-# Export all dev-env image references so scripts/kind-dev-env.sh sees them.
+# Export all dev-env image references so scripts/kind-dev-coordinator-env.sh sees them.
 export IMAGE_REGISTRY COORDINATOR_TAG VLLM_SIMULATOR_TAG EPP_TAG SIDECAR_TAG UDS_TOKENIZER_TAG
 export COORDINATOR_IMAGE VLLM_IMAGE EPP_IMAGE SIDECAR_IMAGE UDS_TOKENIZER_IMAGE
 
@@ -208,9 +208,9 @@ coverage-compare: ## Compare coverage vs baseline (BASELINE_DIR=path; COVERAGE_L
 
 ##@ Kind Development Environment
 
-.PHONY: env-dev-kind
-env-dev-kind: image-build-epp ## Deploy dev environment on a local Kind cluster (DISAGG_TOPOLOGY=pd|epd, default: pd)
-	scripts/kind-dev-env.sh
+.PHONY: env-dev-coordinator-kind
+env-dev-coordinator-kind: image-build-epp ## Deploy the encode/prefill/decode dev environment on a local Kind cluster
+	scripts/kind-dev-coordinator-env.sh
 
 .PHONY: clean-env-dev-kind
 clean-env-dev-kind: ## Delete the Kind dev cluster

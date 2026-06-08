@@ -3,17 +3,17 @@ kind: Deployment
 metadata:
   name: vllm-d
   labels:
-    app: ${DECODE_POOL_NAME}
+    app: ${POOL_NAME}
 spec:
   replicas: ${VLLM_REPLICA_COUNT_D}
   selector:
     matchLabels:
-      app: ${DECODE_POOL_NAME}
+      app: ${POOL_NAME}
       llm-d.ai/component: decode
   template:
     metadata:
       labels:
-        app: ${DECODE_POOL_NAME}
+        app: ${POOL_NAME}
         llm-d.ai/component: decode
         llm-d.ai/role: ${DECODE_ROLE}
     spec:
@@ -140,3 +140,4 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
+      volumes: []

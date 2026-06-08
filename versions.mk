@@ -1,12 +1,12 @@
 # Centralized image registry + version tags for the dev environment.
-# Override any of these via `make VAR=... env-dev-kind` or
-# `export VAR=... && make env-dev-kind`.
+# Override any of these via `make VAR=... env-dev-coordinator-kind` or
+# `export VAR=... && make env-dev-coordinator-kind`.
 
 IMAGE_REGISTRY       ?= ghcr.io/llm-d
 
 # Image tags
 COORDINATOR_TAG      ?= dev
-VLLM_SIMULATOR_TAG   ?= v0.8.2
+VLLM_SIMULATOR_TAG   ?= v0.9.1
 EPP_TAG              ?= dev
 SIDECAR_TAG          ?= v0.8.0
 UDS_TOKENIZER_TAG    ?= v0.8.0

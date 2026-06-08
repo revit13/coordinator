@@ -12,6 +12,6 @@ spec:
     port:
       number: 9002
   # TARGET_PORTS is a pre-formatted YAML block-sequence fragment produced by
-  # kind-dev-env.sh. It begins with a newline and carries its own
+  # kind-dev-coordinator-env.sh. It begins with a newline and carries its own
   # "  - number: <port>" lines at this indentation level.
   targetPorts: ${TARGET_PORTS}

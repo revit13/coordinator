@@ -155,7 +155,7 @@ Deletes the Kind cluster entirely.
 ## Image Tags and Overrides
 
 Image tags and registry live in [versions.mk](versions.mk), which the Makefile includes
-and exports to `scripts/kind-dev-env.sh`:
+and exports to `scripts/kind-dev-coordinator-env.sh`:
 
 | Tag variable | Full image variable | Image | Default tag |
 |---|---|---|---|

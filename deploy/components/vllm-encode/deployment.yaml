@@ -3,20 +3,21 @@ kind: Deployment
 metadata:
   name: vllm-e
   labels:
-    app: ${ENCODE_POOL_NAME}
+    app: ${POOL_NAME}
 spec:
   replicas: ${VLLM_REPLICA_COUNT_E}
   selector:
     matchLabels:
-      app: ${ENCODE_POOL_NAME}
+      app: ${POOL_NAME}
       llm-d.ai/component: encode
   template:
     metadata:
       labels:
-        app: ${ENCODE_POOL_NAME}
+        app: ${POOL_NAME}
         llm-d.ai/component: encode
         llm-d.ai/role: encode
     spec:
+      initContainers: []
       containers:
       - name: vllm
         # VLLM_IMAGE can be a simulator (e.g. llm-d-inference-sim) or a real
@@ -55,20 +56,26 @@ spec:
         - name: encode-rank7
           containerPort: 8007
           protocol: TCP
+        # Startup Probe: Wait for model to load during initialization
+        # Protects liveness/readiness probes from firing too early
         startupProbe:
           httpGet:
             path: /health
             port: 8000
-          failureThreshold: 60
+          failureThreshold: 60  # Allow up to 10 minutes (60 * 10s)
           periodSeconds: 10
           timeoutSeconds: 5
+        # Readiness Probe: Is the model loaded and ready?
+        # Controls traffic routing, removes from service if failing
         readinessProbe:
           httpGet:
-            path: /health
+            path: /health # Use /health/ready if available in your version
             port: 8000
           periodSeconds: 10
           timeoutSeconds: 2
           failureThreshold: 3
+        # Liveness Probe: Is the server process alive?
+        # Simple health check, restarts container if failing
         livenessProbe:
           httpGet:
             path: /health
@@ -91,3 +98,4 @@ spec:
               fieldPath: metadata.namespace
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
+      volumes: []
