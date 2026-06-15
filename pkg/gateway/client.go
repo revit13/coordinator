@@ -65,7 +65,7 @@ func (c *Client) Request(ctx context.Context, method, path string, body []byte, 
 
 	logger := log.FromContext(ctx).WithName("gateway")
 	if body != nil {
-		logger.V(logutil.TRACE).Info("request body", "method", method, "path", path, "headers", req.Header, "body", redactBody(body))
+		logger.V(logutil.TRACE).Info("request body", "method", method, "path", path, "headers", req.Header, "body", RedactBody(body))
 	}
 
 	resp, err := c.httpClient.Do(req)
@@ -78,7 +78,7 @@ func (c *Client) Request(ctx context.Context, method, path string, body []byte, 
 	if err != nil {
 		return nil, fmt.Errorf("reading response from gateway: %w", err)
 	}
-	logger.V(logutil.TRACE).Info("response body", "status", resp.StatusCode, "body", redactBody(respBody))
+	logger.V(logutil.TRACE).Info("response body", "status", resp.StatusCode, "body", RedactBody(respBody))
 	resp.Body = io.NopCloser(bytes.NewReader(respBody))
 
 	return resp, nil
@@ -99,9 +99,9 @@ func (c *Client) Transport() http.RoundTripper {
 	return c.httpClient.Transport
 }
 
-// redactBody parses JSON and replaces string values longer than 50 chars with
+// RedactBody parses JSON and replaces string values longer than 50 chars with
 // "..." so tensor blobs don't drown out the structural fields.
-func redactBody(data []byte) any {
+func RedactBody(data []byte) any {
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		if len(data) > 200 {
